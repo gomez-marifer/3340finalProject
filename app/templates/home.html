@@ -1,23 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class = "col-md-6 offset-md-3">
-    <h1>Login</h1>
-    <form method="POST" action =" {%url 'home'%}">
-        {%csrf_token%}
-        <form>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-    </form>
-    
+    <h1 class = "text-center fs-1 mt-3 text-white">Welcome To Our Website,</h1>
+    <h1 class = "text-center fs-1 mt-4 fw-bolder fst-italic text-white">[Insert Name Here]</h1>
+</div>
+<div class="row justify-content-evenly mt-5">
+  <div class="col-4 border">
+    <p class = "text-center text-white">User Experience</p>
+    <p class = "text-left text-white">The user will be tasked with completing the tasks given to them. Here are some of their functions:</p>
+    <ul>
+      <li class = "text-white">View the tasks given to them</li>
+      <li class = "text-white">Set the status of a task (not started, in progress, completed)</li>
+    </ul>
+  </div>
+  <div class="col-4 border">
+    <p class = "text-center text-white">Admin Experience</p>
+    <p class = "text-left text-white">The admin will be able to assign tasks to different users and monitor over them. Here are some of their functions:</p>
+    <ul>
+      <li class = "text-white">Assign, update, and delete tasks for users</li>
+      <li class = "text-white">Filter by different parameters to view the tasks that they need</li>
+      <li class = "text-white">Assign deadlines and see what groups of people are working on the same task</li>
+     </ul>
+  </div>
 </div>
 
 {%endblock%}

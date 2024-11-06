@@ -1,22 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class = "col-md-6 offset-md-3">
-    <h1>Register With Us Here</h1>
-    <form method="POST" action =" {%url 'home'%}">
-        {%csrf_token%}
-        <form>
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Username</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
-              <div id="passwordHelp" class="form-text">We'll never share your password with anyone else.</div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-    </form>
+
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+  <div class="col-md-6 p-4 border rounded bg-light">
+      <h1 class="text-center">Register with us here</h1>
+      <form method="POST" action="{% url 'home' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="username" class="form-control" id="username" aria-describedby="usernameHelp">
+          </div>
+          <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password">
+          </div>
+          <div class="mb-3">
+            <label for="password-check" class="form-label">Enter your password again</label>
+            <input type="password" class="form-control" id="password-check">
+        </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>
 </div>
 
 {%endblock%}

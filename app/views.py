@@ -9,3 +9,12 @@ def login(request):
 
 def register(request):
     return render(request, 'register.html',{})
+
+def aboutUs(request):
+    return render(request, 'aboutUs.html',{})
+
+def tasks(request):
+    return render(request, 'tasks.html',{})
+
+def administrator(request):
+    return render(request, 'admin.html',{})
