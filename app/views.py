@@ -43,5 +43,24 @@ def loginPage(request):
     return render(request, 'login.html', context)
 
 def home(request):
+<<<<<<< HEAD
     context = {}
     return render(request, 'home.html', context)
+=======
+    return render(request, 'home.html',{})
+
+def login(request):
+    return render(request, 'login.html',{})
+
+def register(request):
+    return render(request, 'register.html',{})
+
+def aboutUs(request):
+    return render(request, 'aboutUs.html',{})
+
+def tasks(request):
+    return render(request, 'tasks.html',{})
+
+def administrator(request):
+    return render(request, 'admin.html',{})
+>>>>>>> 2e57ce8a21565f8ea13c91f3e1b158aa14c632e7
