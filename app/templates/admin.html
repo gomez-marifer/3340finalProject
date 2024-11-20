@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="card mt-5" style="width: 18rem;">
+            <div class="card-header">
+              List of Users
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">User 1</li>
+              <li class="list-group-item">User 2</li>
+              <li class="list-group-item">User 3</li>
+            </ul>
+          </div>
+      </div>
+        <div class="col-8">
+            <div class="container-fluid bg-light mt-5">
+                <div class="row align-items-start">
+                    <div class="col">
+                        <p class = "text-center fw-bold">Task</p>     
+                    </div>
+                    <div class="col">
+                        <p class = "text-center fw-bold">Assigned by</p>    
+                    </div>
+                    <div class="col">
+                        <p class = "text-center fw-bold">Deadline</p>    
+                    </div>
+                    <div class="col">
+                        <p class = "text-center fw-bold">Progress</p>    
+                    </div>
+                </div>
+                <div class="row align-items-start">
+                    <div class="col">
+                        <p class = "text-center">take out the trash</p>     
+                    </div>
+                    <div class="col">
+                        <p class = "text-center">Dad</p>    
+                    </div>
+                    <div class="col">
+                        <p class = "text-center">11/2/2024 11:59PM</p>
+                    </div>
+                    <div class="col">
+                        <p class = "text-center">Finished</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
