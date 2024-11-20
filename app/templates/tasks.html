@@ -1,44 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
+{%include 'navbar.html'%} 
+{% load static %}
+<link rel="stylesheet" href="{% static 'tasks.css' %}">
 
-<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
-  <div class="col-md-6 p-4 w-75 border rounded bg-light">
-    <div class="container text-center">
-        <div class="row align-items-start">
-            <div class="col">
-                <p class = "text-center fw-bold">Task</p>     
-            </div>
-            <div class="col">
-                <p class = "text-center fw-bold">Assigned by</p>    
-            </div>
-            <div class="col">
-                <p class = "text-center fw-bold">Deadline</p>    
-            </div>
-            <div class="col">
-                <p class = "text-center fw-bold">Progress</p>    
-            </div>
+<div class="row d-flex justify-content-center container">
+    <div class="col-md-8">
+      <div class="card-hover-shadow-2x mb-3 card">
+        <div class="card-header-tab card-header">
+          <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+              class="fa fa-tasks"></i>&nbsp;Task Lists</div>
+          
         </div>
-        <div class="row align-items-start">
-            <div class="col">
-                <p class = "text-center">take out the trash</p>     
+        <div class="scroll-area-sm">
+          <perfect-scrollbar class="ps-show-limits">
+            <div style="position: static;" class="ps ps--active-y">
+              <div class="ps-content">
+                <ul class=" list-group list-group-flush">
+                  <li class="list-group-item">
+                    <div class="todo-indicator bg-warning"></div>
+                    <div class="widget-content p-0">
+                      <div class="widget-content-wrapper">
+                        <div class="widget-content-left mr-2">
+                        </div>
+                        <div class="widget-content-left">
+                          <div class="widget-heading">Call Sam For payments</div>
+                          <div class="widget-subheading"><i>By Bob</i></div>
+                        </div>
+                      <div class="widget-content-right">
+                        <button class="border-0 btn-transition btn btn-outline-success">
+                          <i class="fa fa-check"></i>X</button>
+                          <button class="border-0 btn-transition btn btn-outline-warning">
+                         <i class="fa fa-trash">X</i>
+                         
+                        </button>
+                      </div>
+                      </div>
+                    </div>
+                </ul>
+              </div>
             </div>
-            <div class="col">
-                <p class = "text-center">Dad</p>    
-            </div>
-            <div class="col">
-                <p class = "text-center">11/2/2024 11:59PM</p>
-            </div>
-            <div class="col">
-                <select class="progress-select rounded" aria-label="Default select example">
-                    <option initial>Pick the Status</option>
-                    <option value="uncomplete">Uncomplete</option>
-                    <option value="inProgress">In Progress</option>
-                    <option value="complete">Complete</option>
-                  </select>  
-            </div>
+          </perfect-scrollbar>
         </div>
+        <div class="d-block text-right card-footer"></div>
+      </div>
     </div>
-  </div>
-</div>
-
+    </div>
 {%endblock%}
