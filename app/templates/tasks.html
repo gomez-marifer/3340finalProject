@@ -23,16 +23,22 @@
                       <div class="widget-content-wrapper">
                         <div class="widget-content-left mr-2">
                         </div>
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Call Sam For payments</div>
-                          <div class="widget-subheading"><i>By Bob</i></div>
-                        </div>
-                      <div class="widget-content-right">
-                        <button class="border-0 btn-transition btn btn-outline-success">
-                          <i class="fa fa-check"></i>X</button>
-                          <button class="border-0 btn-transition btn btn-outline-warning">
-                         <i class="fa fa-trash">X</i>
-                         
+                        {% for task in tasks %}
+                          <div>
+                            <h3>{{ task.title }}</h3>
+                            <p>{{ task.description }}</p>
+                            <p>Status: {{ task.get_status_display }}</p>
+                            <form method="POST" action="{% url 'update_task_status' task.id %}">
+                              {% csrf_token %}
+                              <select name="status">
+                                <option value="pending" {%if task.status == 'pending'%}selected{%endif%}>Pending</option>
+                                <option value="in_progress" {%if task.status == 'in_progress'%}selected{%endif%}>In Progress</option>
+                                <option value="completed" {%if task.status == 'completed'%}selected{%endif%}>Completed</option>
+                              </select>
+                              <button type="submit">Update</button>
+                            </form>
+                          </div>
+                        {% endfor %}
                         </button>
                       </div>
                       </div>

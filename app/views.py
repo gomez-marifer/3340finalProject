@@ -4,12 +4,14 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth import authenticate,login, logout
+from django.contrib.auth.models import Group
 
 from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from .models import *
-from .forms import CreateUserForm
+from .forms import CreateUserForm,TaskForm
+from .decorators import *
 
 # Create your views here.
 def registerPage(request):
@@ -23,6 +25,8 @@ def registerPage(request):
             if form.is_valid():
                 form.save()
                 user = form.cleaned_data.get('username')
+                group = Group.objects.get(name='user')
+                user.groups.add(group)
                 messages.success(request, "Account was created for " + user)
                 
                 return redirect('login')
@@ -60,8 +64,37 @@ def aboutUs(request):
 
 @login_required(login_url='login')
 def tasks(request):
-    return render(request, 'tasks.html',{})
+    user_tasks = Task.objects.filter(user=request.user)  # Fetch tasks for the logged-in user
+    form = TaskForm()
 
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.user = request.user  # Assign the logged-in user to the task
+            task.save()
+            return redirect('tasks')
+
+    context = {'tasks': user_tasks, 'form': form}
+    return render(request, 'tasks.html', context)
+
+@login_required(login_url='login')
+def update_task_status(request, pk):
+    task = Task.objects.get(id=pk)
+
+    # Ensure only the owner can update the task
+    if task.user != request.user:
+        return HttpResponse("Unauthorized", status=403)
+
+    if request.method == 'POST':
+        task.status = request.POST.get('status')
+        task.save()
+        return redirect('tasks')
+
+    return render(request, 'update_task.html', {'task': task})
+
+
+@admin_only
 def administrator(request):
     return render(request, 'admin.html',{})
 
