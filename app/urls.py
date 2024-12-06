@@ -9,7 +9,7 @@ urlpatterns = [
     path('aboutUs/',views.aboutUs, name = 'aboutUs'),
     path('tasks/',views.tasks, name = 'tasks'),
     path('update_task/<int:pk>/', views.update_task_status, name='update_task_status'),
-    path('administrator/',views.administrator, name = 'administrator'),
+    path('administrator/', views.manage_tasks, name='manage_tasks'),
     path('logout/', views.logoutUser, name='logout'),
 
 ]

@@ -2,12 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
-
+from django.db.models import Q
 from django.contrib.auth import authenticate,login, logout
-from django.contrib.auth.models import Group
-
+from django.contrib.auth.models import Group, User
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import CreateUserForm,TaskForm
@@ -95,8 +93,26 @@ def update_task_status(request, pk):
 
 
 @admin_only
-def administrator(request):
-    return render(request, 'admin.html',{})
+def manage_tasks(request):
+    # Handle search query
+    query = request.GET.get('q', '')
+    tasks = Task.objects.filter(
+        Q(title__icontains=query) | Q(user__username__icontains=query)
+    ) if query else Task.objects.all()
+
+    # Handle task assignment form submission
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST.get('description', '')
+        user_id = request.POST['user']
+        user = User.objects.get(id=user_id)
+        Task.objects.create(title=title, description=description, user=user)
+        return redirect('manage_tasks')  # Redirect to clear the form after submission
+
+    # Pass tasks and users to the template
+    users = User.objects.all()
+    return render(request, 'admin.html', {'tasks': tasks, 'users': users, 'query': query})
+
 
 def logoutUser(request):
     logout(request)

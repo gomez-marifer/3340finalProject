@@ -135,6 +135,19 @@ i {
     transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
+.list-group {
+    display: block; 
+}
+  
+  .task-item {
+    display: block; 
+    margin-bottom: 20px; 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    background-color: #f9f9f9; 
+  }
+
 .btn-outline-success {
     color: #3ac47d;
     border-color: #3ac47d;

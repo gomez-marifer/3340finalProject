@@ -22,3 +22,4 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = ['title', 'description', 'status']  # User is excluded as it's auto-set in views
+

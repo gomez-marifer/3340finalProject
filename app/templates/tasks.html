@@ -23,22 +23,26 @@
                       <div class="widget-content-wrapper">
                         <div class="widget-content-left mr-2">
                         </div>
-                        {% for task in tasks %}
-                          <div>
-                            <h3>{{ task.title }}</h3>
-                            <p>{{ task.description }}</p>
-                            <p>Status: {{ task.get_status_display }}</p>
-                            <form method="POST" action="{% url 'update_task_status' task.id %}">
-                              {% csrf_token %}
-                              <select name="status">
-                                <option value="pending" {%if task.status == 'pending'%}selected{%endif%}>Pending</option>
-                                <option value="in_progress" {%if task.status == 'in_progress'%}selected{%endif%}>In Progress</option>
-                                <option value="completed" {%if task.status == 'completed'%}selected{%endif%}>Completed</option>
-                              </select>
-                              <button type="submit">Update</button>
-                            </form>
-                          </div>
-                        {% endfor %}
+                        <ul class="list-group list-group-flush">
+                          {% for task in tasks %}
+                          <li class="list-group-item task-item">
+                            <div>
+                              <h3>{{ task.title }}</h3>
+                              <p>{{ task.description }}</p>
+                              <p>Status: {{ task.get_status_display }}</p>
+                              <form method="POST" action="{% url 'update_task_status' task.id %}">
+                                {% csrf_token %}
+                                <select name="status">
+                                  <option value="pending" {%if task.status == 'pending'%}selected{%endif%}>Pending</option>
+                                  <option value="in_progress" {%if task.status == 'in_progress'%}selected{%endif%}>In Progress</option>
+                                  <option value="completed" {%if task.status == 'completed'%}selected{%endif%}>Completed</option>
+                                </select>
+                                <button type="submit">Update</button>
+                              </form>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>                        
                         </button>
                       </div>
                       </div>
