@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
-from .models import Task
+from .models import Task, Customer
 
 
 #from .models import Order
@@ -23,3 +23,7 @@ class TaskForm(ModelForm):
         model = Task
         fields = ['title', 'description', 'status']  # User is excluded as it's auto-set in views
 
+class CustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['name', 'phone', 'email']  # Exclude `date_created`
