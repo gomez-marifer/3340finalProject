@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'homeNavBar.html' %}
 
 <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
   <div class="col-md-6 p-4 border rounded bg-light">
-      <h1 class="text-center">Register with us here</h1>
+      <h1 class="text-center">Customer Registration</h1>
 
       <form method="POST" action="">
           {%csrf_token%}

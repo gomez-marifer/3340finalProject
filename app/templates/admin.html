@@ -1,45 +1,53 @@
 {% extends 'base.html' %}
 {% block content %}
-{%include 'navbar.html'%} 
+{% include 'navbar.html' %} 
 {% load static %}
+
 <link rel="stylesheet" href="{% static 'tasks.css' %}">
 
-<div class="row d-flex justify-content-center container">
-    <div class="col-md-8">
-      <div class="card-hover-shadow-2x mb-3 card">
-        <div class="card-header-tab card-header">
-              <input class="form-control me-2" type="search" placeholder="Search for User" aria-label="Search">
-          </div>
+  <div class="container mt-5">
+    
+    <div class = "card">
+      <form method="POST" action="{% url 'manage_tasks' %}" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title" class="form-label">Task Title</label>
+          <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="user" class="form-label">Assign To</label>
+          <select id="user" name="user" class="form-control">
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-success">Assign Task</button>
+      </form>
+    </div>
 
-        <div class="scroll-area-sm">
-          <perfect-scrollbar class="ps-show-limits">
-            <div style="position: static;" class="ps ps--active-y">
-              <div class="ps-content">
-                <ul class=" list-group list-group-flush">
-                  <li class="list-group-item">
-                    <div class="todo-indicator bg-warning"></div>
-                    <div class="widget-content p-0">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-2">
-                        </div>
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Call Sam For payments (assignment)</div>
-                          <div class="widget-subheading"><i>By Bob (assigned by)</i></div>
-                        </div>
-                      <div class="widget-content-right">
-                        <div class="widget-heading">(Task completion)</div>
-                      </div>
-                      </div>
-                    </div>
-                </ul>
-              </div>
-            </div>
-          </perfect-scrollbar>
-        </div>
-        <div class="d-block text-right card-footer">
-            <button class="btn btn-primary">Submit</button>
-        </div>
-      </div>
+  <form method="GET" action="{% url 'manage_tasks' %}" class="mb-4">
+    <div class="input-group mt-4">
+      <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search tasks or users">
+      <button class="btn btn-primary" type="submit">Search</button>
     </div>
-    </div>
-{%endblock%}
+  </form>
+
+  <h3 class = "text-white">Task List</h3>
+  <ul class="list-group">
+    {% for task in tasks %}
+    <li class="list-group-item">
+      <h5>{{ task.title }}</h5>
+      <p>{{ task.description }}</p>
+      <p>Assigned to: {{ task.user.username }}</p>
+      <p>Status: {{ task.get_status_display }}</p>
+      <hr width="100%" size="4">
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

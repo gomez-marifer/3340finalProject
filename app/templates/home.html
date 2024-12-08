@@ -1,10 +1,79 @@
 {% extends 'base.html' %}
 {% block content %}
 {%include 'navbar.html'%} 
-<div class = "col-md-6 offset-md-3">
-    <h1 class = "text-center fs-1 mt-3 text-white">Welcome To Our Website,</h1>
-    <h1 class = "text-center fs-1 mt-4 fw-bolder fst-italic text-white">{{request.user}}</h1>
+{%include 'status.html'%}
+
+<br>
+<div class="row">
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+
+                <form method="get">     
+
+                    <div class="mb-3">
+                        <label class="sr-only" for="inlineFormInputName2">Customer</label>
+                        {{myFilter.form.customer}}
+
+                        <label class="sr-only" for="inlineFormInputName2">Title</label>
+                        {{myFilter.form.title}}
+
+                        <label class="form-label">Due Date</label>
+                        {{myFilter.form.due_date}}
+
+                        <label class="form-label">Status</label>
+                        {{myFilter.form.status}}
+
+                    </div>                  
+
+                <button class="btn btn-primary" type="submit">
+                    Search
+                </button>
+
+                </form>
+            </div>
+
+        </div>    
+    </div>
+
+    <div class="col-md-12">
+       
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_assignment'%}">Create Assignment
+            </a>
+            <table class="table table-sm">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date Created</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>             
+
+                {% for assignment in assignments %}
+                    <tr>
+                        <td>{{assignment.title}}</td>
+                        <td>{{assignment.description}}</td>
+                        <td>{{assignment.date_created}}</td>
+                        <td >{{assignment.due_date}}</td>
+                        <td>{{assignment.status}}</td>
+                        
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_assignment' assignment.id%}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_assignment' assignment.id%}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+
+    
 </div>
+
 
 
 
