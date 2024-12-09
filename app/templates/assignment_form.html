@@ -1,8 +1,6 @@
-
-
-
 {% extends 'base.html' %}
 {% block content %}
+{% include 'navbar.html' %}
 
 <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
   <div class="col-md-6 p-4 border rounded bg-light">
@@ -43,6 +41,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>
+          <a class="btn btn-warning" href="{%url 'home'%}">Cancel</a>
       </form>
 
   </div>
@@ -56,9 +55,6 @@
     var form_fields = document.getElementsByTagName('input')
     form_fields[1].placeholder='Title..';
     form_fields[2].placeholder='DD/MM/YYYY';
-    
-    
-
 
     for (var field in form_fields){	
     form_fields[field].className += ' form-control'

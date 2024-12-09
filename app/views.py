@@ -1,24 +1,20 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
-from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
 from .models import *
-from .decorators import *
 from .filters import *
 from .decorators import unauthenticated_user, allowed_users, admin_only
-from .forms import CreateUserForm, TaskForm, AssignmentForm
+from .forms import CreateUserForm, AssignmentForm
 
 
 # CUSTOMER REGISTER
 @unauthenticated_user
-# User Authentication Views
+#Customer Registration 
 def registerPage(request):
-
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -35,7 +31,7 @@ def registerPage(request):
     context = {'form':form}
     return render(request, 'register.html', context)
 
-# ADMIN
+#Admin Registration
 @unauthenticated_user
 def adminRegisterPage(request):
 
@@ -71,23 +67,16 @@ def loginPage(request):
                     
     context = {}
     return render(request, 'login.html', context)
-           
 
-#only admins can access
+def aboutUs(request):
+    return render(request, 'aboutUs.html', {})
 
+def dashboard(request):
+    return render(request, 'dashboard.html', {})         
 
-#@login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
-#def administrator(request):
- #   return render(request, 'admin.html',{})
-
+#Customer Home Page
 @login_required(login_url='login')
-def logoutUser(request):
-    logout(request)
-    return redirect('dashboard')
-
-# Task Views
-@login_required(login_url='login')
+@allowed_users(['customer'])
 def tasks(request):
     user_assignment = Assignment.objects.filter(customer=request.user)
     form = AssignmentForm()
@@ -109,87 +98,7 @@ def tasks(request):
     context = {'assignments': user_assignment, 'form': form, 'total_assignments':total_assignments, 'pending': pending, 'completed': completed}
     return render(request, 'tasks.html', context)
 
-@login_required(login_url='login')
-def update_task_status(request, pk):
-    task = Task.objects.get(id=pk)
-
-    if task.user != request.user:
-        return HttpResponse("Unauthorized", status=403)
-
-    if request.method == 'POST':
-        task.status = request.POST.get('status')
-        task.save()
-        return redirect('tasks')
-
-    return render(request, 'update_task.html', {'task': task})
-
-
-# Customer Views
-@login_required(login_url='login')
-def customer_list(request):
-    customers = Customer.objects.all()
-    return render(request, 'customer_list.html', {'customers': customers})
-
-@login_required(login_url='login')
-def create_customer(request):
-    if request.method == "POST":
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('customer_list')
-    else:
-        form = CustomerForm()
-    return render(request, 'form.html', {'form': form, 'title': 'Add Customer'})
-
-@login_required(login_url='login')
-def update_customer(request, pk):
-    customer = get_object_or_404(Customer, pk=pk)
-    if request.method == "POST":
-        form = CustomerForm(request.POST, instance=customer)
-        if form.is_valid():
-            form.save()
-            return redirect('customer_list')
-    else:
-        form = CustomerForm(instance=customer)
-    return render(request, 'form.html', {'form': form, 'title': 'Edit Customer'})
-
-@login_required(login_url='login')
-def delete_customer(request, pk):
-    customer = get_object_or_404(Customer, pk=pk)
-    if request.method == "POST":
-        customer.delete()
-        return redirect('customer_list')
-    return render(request, 'confirm_delete.html', {'object': customer, 'title': 'Delete Customer'})
-
-
-@admin_only
-def manage_tasks(request):
-    query = request.GET.get('q', '')
-    tasks = Task.objects.filter(
-        Q(title__icontains=query) | Q(user__username__icontains=query)
-    ) if query else Task.objects.all()
-
-    if request.method == 'POST':
-        title = request.POST['title']
-        description = request.POST.get('description', '')
-        user_id = request.POST['user']
-        user = User.objects.get(id=user_id)
-        Task.objects.create(title=title, description=description, user=user)
-        return redirect('manage_tasks')
-
-    users = User.objects.all()
-    return render(request, 'admin.html', {'tasks': tasks, 'users': users, 'query': query})
-
-
-def aboutUs(request):
-    return render(request, 'aboutUs.html', {})
-
-def dashboard(request):
-    return render(request, 'dashboard.html', {})
-
-
-##################################
-
+#Admin Home Page
 @login_required(login_url='login')
 @admin_only
 def home(request):
@@ -206,8 +115,8 @@ def home(request):
     context = {'assignments':assignments, 'total_assignments': total_assignments, 'pending': pending, 'completed': completed, 'myFilter': myFilter}
     return render(request, 'home.html', context)
 
+@login_required(login_url='login')
 def createAssignment(request):
-
     form = AssignmentForm()
     if request.method == 'POST':
         #print('Printing POST:', request.POST)
@@ -219,6 +128,7 @@ def createAssignment(request):
     context={'form':form}
     return render(request, 'assignment_form.html', context)
 
+@login_required(login_url='login')
 def updateAssignment(request, pk):
 
     assignment = Assignment.objects.get(id=pk)
@@ -233,6 +143,8 @@ def updateAssignment(request, pk):
     context = {'form': form}
     return render(request, 'assignment_form.html', context)
 
+@login_required(login_url='login')
+@admin_only
 def deleteAssignment(request, pk):
 
     assignment = Assignment.objects.get(id=pk)
@@ -243,11 +155,7 @@ def deleteAssignment(request, pk):
     context = {'item': assignment}
     return render(request, 'delete.html', context)
 
-def userPage(request):
-    assignments = Assignment.objects.all()
-
-    myFilter = AssignmentFilter(request.GET, queryset=assignments)
-    assignments = myFilter.qs
-
-    context = {'assignments': assignments, 'myFilter': myFilter}
-    return render(request, 'user.html', context)
+@login_required(login_url='login')
+def logoutUser(request):
+    logout(request)
+    return redirect('dashboard')
